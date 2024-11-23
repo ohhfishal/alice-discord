@@ -1,56 +1,54 @@
 package main
 
 import (
-  "fmt"
-  "log/slog"
-  "github.com/ohhfishal/alice-discord/cmd"
-  "github.com/ohhfishal/alice-discord/handler"
+	"fmt"
+	"github.com/ohhfishal/alice-discord/cmd"
+	"github.com/ohhfishal/alice-discord/handler"
+	"log/slog"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 type Config struct {
-  AppID string
+	AppID string
 }
 
 type App struct {
-  Session *discordgo.Session
-  Config Config
-
+	Session *discordgo.Session
+	Config  Config
 }
 
-func NewConfig(getenv func(string)string) Config {
-  return Config {
-    AppID: getenv("APP_ID"),
-  }
+func NewConfig(getenv func(string) string) Config {
+	return Config{
+		AppID: getenv("APP_ID"),
+	}
 }
 
-func NewApp(getenv func(string)string) (*App, error) {
-  var app App
+func NewApp(getenv func(string) string) (*App, error) {
+	var app App
 	session, err := discordgo.New("Bot " + getenv("TOKEN"))
 	if err != nil {
-    return nil, err
+		return nil, err
 	}
 
-  config := NewConfig(getenv)
+	config := NewConfig(getenv)
 
-  app.Session = session
-  app.Config = config
-  app.setupHandlers()
+	app.Session = session
+	app.Config = config
+	app.setupHandlers()
 
-  commands := cmd.AllCommands()
+	commands := cmd.AllCommands()
 
-  newCmds, err := app.Session.ApplicationCommandBulkOverwrite(app.Config.AppID, "", commands)
-  if err != nil {
-    return nil, err
-  }
-  for _, command := range newCmds {
-    slog.Info(fmt.Sprintf("registered command: %s", command.Name))
-  }
+	newCmds, err := app.Session.ApplicationCommandBulkOverwrite(app.Config.AppID, "", commands)
+	if err != nil {
+		return nil, err
+	}
+	for _, command := range newCmds {
+		slog.Info(fmt.Sprintf("registered command: %s", command.Name))
+	}
 
-  return &app, nil
+	return &app, nil
 }
-
 
 func (app *App) Start() error {
 	return app.Session.Open()

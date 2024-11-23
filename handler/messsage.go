@@ -1,16 +1,16 @@
 package handler
 
 import (
-  "fmt"
-  "log/slog"
+	"fmt"
+	"log/slog"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 func MessageCreate(session *discordgo.Session, message *discordgo.MessageCreate) {
-  if session.State.User.ID == message.Author.ID {
-    slog.Info(fmt.Sprintf("replied: [%s] %s", message.Author, message.Content))
-    return
-  }
-  slog.Info(fmt.Sprintf("message: [%s] %s", message.Author, message.Content))
+	if session.State.User.ID == message.Author.ID {
+		slog.Info(fmt.Sprintf("replied: [%s] %s", message.Author, message.Content))
+		return
+	}
+	slog.Info(fmt.Sprintf("message: [%s] %s", message.Author, message.Content))
 }

@@ -1,19 +1,18 @@
 package main
 
 import (
-  "fmt"
-  "log/slog"
+	"fmt"
+	"log/slog"
 	"os"
 	"os/signal"
 )
 
-
 func main() {
-  app, err := NewApp(os.Getenv)
-  if err != nil {
-    slog.Error(fmt.Sprintf("init app:", err))
+	app, err := NewApp(os.Getenv)
+	if err != nil {
+		slog.Error(fmt.Sprintf("init app:", err))
 		os.Exit(1)
-  }
+	}
 
 	err = app.Start()
 	if err != nil {
@@ -24,7 +23,7 @@ func main() {
 	sigch := make(chan os.Signal, 1)
 	signal.Notify(sigch, os.Interrupt, os.Kill)
 	<-sigch
-  slog.Info("recieved signal, shutting down")
+	slog.Info("recieved signal, shutting down")
 
 	err = app.Shutdown()
 	if err != nil {
