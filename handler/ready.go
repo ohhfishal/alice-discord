@@ -7,6 +7,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func OnReady(s *discordgo.Session, r *discordgo.Ready) {
+func (h *Handler) OnReady(s *discordgo.Session, r *discordgo.Ready) {
 	slog.Info(fmt.Sprintf("logged in as %s", r.User.String()))
 }

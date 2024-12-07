@@ -14,7 +14,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = app.Start()
+	err = app.Open()
 	if err != nil {
 		slog.Error(fmt.Sprintf("starting app: %w", err))
 		os.Exit(1)
@@ -25,7 +25,7 @@ func main() {
 	<-sigch
 	slog.Info("recieved signal, shutting down")
 
-	err = app.Shutdown()
+	err = app.Close()
 	if err != nil {
 		slog.Error(fmt.Sprintf("shutdown: %w", err))
 	}

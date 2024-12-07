@@ -11,7 +11,7 @@ func NewPingCmd() *discordgo.ApplicationCommand {
 	}
 }
 
-func Ping(session *discordgo.Session, interaction *discordgo.Interaction) error {
+func (h *Handler) Ping(session *discordgo.Session, interaction *discordgo.Interaction) error {
 	return session.InteractionRespond(interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
